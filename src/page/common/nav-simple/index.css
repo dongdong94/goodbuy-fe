@@ -1,0 +1,11 @@
+.nav-simple{
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 2px solid #ddd;
+    background: #9096e9;
+}
+.nav-simple .logo{
+    font-size: 26px;
+    font-weight: bold;
+    color:whitesmoke;
+}

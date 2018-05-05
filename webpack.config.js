@@ -4,12 +4,14 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 //环境变量配置 dev/online
 var WEBPACK_ENV       = process.env.WEBPACK_ENV || 'dev';
 //获取html-webpack-plugin参数的方法(这里的name指代的是不同页面，common是要多次使用的公共的模块)
-var getHtmlConfig = function(name){
+var getHtmlConfig = function(name,title){
     return {
          //原始html模板地址
          template : './src/view/' + name + '.html',
          //打包输出路径已经配置所以直接会到dist文件夹下
          filename : 'view/' + name + '.html',
+         //页面标题
+         title    : title,
          //inject指的是是否将javascript文件插入到body底部
          inject   : true,
          hash     : true,
@@ -22,7 +24,8 @@ var config = {
     entry : {
         'common': ['./src/page/common/index.js'],
         'index' : ['./src/page/index/index.js'],
-        'login' : ['./src/page/login/index.js']
+        'login' : ['./src/page/login/index.js'],
+        'result' : ['./src/page/result/index.js']
     },
     output : {
         //文件存放路径
@@ -39,9 +42,22 @@ var config = {
         loaders : [
             { test : /\.css$/,loader : ExtractTextPlugin.extract("style-loader","css-loader") },
             //字体和图片的处理
-            { test : /\.(gif|png|jpg|woff|svg|eot|ttf)\??.*$/,loader : 'url-loader?limit=100&name=resource/[name].[ext]' }
+            { test : /\.(gif|png|jpg|woff|svg|eot|ttf)\??.*$/,loader : 'url-loader?limit=100&name=resource/[name].[ext]' },
+            { test : /\.string$/,loader : 'html-loader' }
+            
             
         ]
+    },
+    //路径别名
+    resolve : {
+        alias : {
+            node_modules    : __dirname + '/node_modules',            
+            util    : __dirname + '/src/util',
+            page    : __dirname + '/src/page',
+            service : __dirname + '/src/service',
+            image   : __dirname + '/src/image'
+            
+        }
     },
     //插件
     plugins : [
@@ -53,8 +69,9 @@ var config = {
         }),
         //分离css单独打包插件（使用前先引入）
         new ExtractTextPlugin("css/[name].css"),
-        new HtmlWebpackPlugin(getHtmlConfig('index')),
-        new HtmlWebpackPlugin(getHtmlConfig('login')),        
+        new HtmlWebpackPlugin(getHtmlConfig('index','首页')),
+        new HtmlWebpackPlugin(getHtmlConfig('login','用户登录')),
+        new HtmlWebpackPlugin(getHtmlConfig('result','操作结果'))      
     ]
 };
 if('dev' === WEBPACK_ENV){
