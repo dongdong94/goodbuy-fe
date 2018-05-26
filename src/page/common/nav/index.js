@@ -19,7 +19,7 @@ var nav = {
         });
         //注册点击事件
         $('.js-register').click(function(){
-            window.location.href = './register.html';
+            window.location.href = './user-register.html';
         });
         //退出点击事件
         $('.js-logout').click(function(){
@@ -37,7 +37,7 @@ var nav = {
         _user.checkLogin(
             function(res){
                 //success 成功登录 进行操作
-               $('.user.not-login').hide().sibings('.user.login').show().find('.username').text(res.username);
+               $('.user.not-login').hide().siblings('.user.login').show().find('.username').text(res.username);
             },function(errMsg){
                 //do nothing
             }
